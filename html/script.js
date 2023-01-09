@@ -367,7 +367,18 @@ $(document).ready(function() {
 QBClothing.ReloadOutfits = function(outfits) {
     $(".clothing-menu-myOutfits-container").html("");
     $.each(outfits, function(index, outfit) {
-        var elem = '<div class="clothing-menu-option" data-myOutfit="' + (index + 1) + '"> <div class="clothing-menu-option-header"><p>' + outfit.outfitname + '</p></div><div class="clothing-menu-myOutfit-option-button"><p data-tkey="select">Select</p></div><div class="clothing-menu-myOutfit-option-button-remove"><p data-tkey="delete">Delete</p></div></div>'
+        var elem =
+        `<div class="clothing-menu-option" data-myOutfit="${(index + 1)}">
+            <div class="clothing-menu-option-header">
+                <p>${outfit.outfitname}</p>
+            </div>
+            <div class="clothing-menu-myOutfit-option-button">
+                <p data-tkey="select">Select</p>
+            </div>
+            <div class="clothing-menu-myOutfit-option-button-remove">
+                <p data-tkey="delete">Delete</p>
+            </div>
+        </div>`
         $(".clothing-menu-myOutfits-container").append(elem)
 
         $("[data-myOutfit='" + (index + 1) + "']").data('myOutfitData', outfit)
@@ -428,19 +439,35 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-myOutfits-container").html("");
     $.each(data.menus, function(i, menu) {
         if (menu.selected) {
-            $(".clothing-menu-header").append('<div class="clothing-menu-header-btn ' + menu.menu + 'Tab selected" data-category="' + menu.menu + '"><p>' + menu.label + '</p></div>')
+            let elem = `
+                <div class="clothing-menu-header-btn ${menu.menu}Tab selected" data-category="${menu.menu}">
+                    <p>${menu.label}</p>
+                </div>`
+            $(".clothing-menu-header").append(elem)
             $(".clothing-menu-" + menu.menu + "-container").css({ "display": "block" });
 
             selectedTab = "." + menu.menu + "Tab";
             lastCategory = menu.menu;
 
         } else {
-            $(".clothing-menu-header").append('<div class="clothing-menu-header-btn ' + menu.menu + 'Tab" data-category="' + menu.menu + '"><p>' + menu.label + '</p></div>')
+            let elem = `
+                <div class="clothing-menu-header-btn ${menu.menu}Tab" data-category="${menu.menu}">
+                    <p>${menu.label}</p>
+                </div>`
+            $(".clothing-menu-header").append(elem)
         }
 
         if (menu.menu == "roomOutfits") {
             $.each(menu.outfits, function(index, outfit) {
-                var elem = '<div class="clothing-menu-option" data-outfit="' + (index + 1) + '"> <div class="clothing-menu-option-header"><p>' + outfit.outfitLabel + '</p></div> <div class="clothing-menu-outfit-option-button"><p data-tkey="select">Select Outfit</p></div> </div>'
+                var elem = `
+                    <div class="clothing-menu-option" data-outfit="${(index + 1)}">
+                        <div class="clothing-menu-option-header">
+                            <p>${outfit.outfitLabel}</p>
+                        </div>
+                        <div class="clothing-menu-outfit-option-button">
+                            <p data-tkey="select_outfit">Select Outfit</p>
+                        </div>
+                    </div>`
                 $(".clothing-menu-roomOutfits-container").append(elem)
 
                 $("[data-outfit='" + (index + 1) + "']").data('outfitData', outfit)
@@ -449,7 +476,18 @@ QBClothing.Open = function(data) {
 
         if (menu.menu == "myOutfits") {
             $.each(menu.outfits, function(index, outfit) {
-                var elem = '<div class="clothing-menu-option" data-myOutfit="' + (index + 1) + '"> <div class="clothing-menu-option-header"><p>' + outfit.outfitname + '</p></div><div class="clothing-menu-myOutfit-option-button"><p data-tkey="select">Select</p></div><div class="clothing-menu-myOutfit-option-button-remove"><p data-tkey="delete">Delete</p></div></div>'
+                var elem = `
+                    <div class="clothing-menu-option" data-myOutfit="${(index + 1)}">
+                        <div class="clothing-menu-option-header">
+                            <p>${outfit.outfitname}</p>
+                        </div>
+                        <div class="clothing-menu-myOutfit-option-button">
+                            <p data-tkey="select_outfit">Select Outfit</p>
+                        </div>
+                        <div class="clothing-menu-myOutfit-option-button-remove">
+                            <p data-tkey="delete">Delete</p>
+                        </div>
+                    </div>`
                 $(".clothing-menu-myOutfits-container").append(elem)
 
                 $("[data-myOutfit='" + (index + 1) + "']").data('myOutfitData', outfit)

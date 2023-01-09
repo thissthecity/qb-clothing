@@ -22,7 +22,7 @@ local Translations = {
     ui = {
         select = "Select",
         delete = "Delete",
-        select_outfit = "Selecionar Outfit",
+        select_outfit = "Select Outfit",
         player_model = "Player Model",
         model = "Model",
         mother = "Mother",
@@ -97,7 +97,8 @@ local Translations = {
 
     notify = {
         error_bracelet = "You can't remove your ankle bracelet ...",
-        info_deleteOutfit = "You have deleted your %{outfit} outfit!"
+        info_deleteOutfit = "You have deleted your %{outfit} outfit!",
+        info_selectOutfit = "You have chosen the %{outfit}! Press Confirm to confirm outfit."
     }
 }
 

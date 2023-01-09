@@ -97,7 +97,8 @@ local Translations = {
 
     notify = {
         error_bracelet = "Você não pode remover sua tornozeleira ...",
-        info_deleteOutfit = "Você apagou o outfit %{outfit}!"
+        info_deleteOutfit = "Você apagou o outfit %{outfit}!",
+        info_selectOutfit = "Você selecionou o(a) %{outfit}! Pressione Confirmar para confirmar."
     }
 }
 
