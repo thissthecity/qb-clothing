@@ -356,42 +356,42 @@ local faceProps = {
 function GetMaxValues()
     local maxModelValues = {
         ["arms"]        = {type = "character", item = 0, texture = 0},
-        ["eye_color"]   = {type = "hair", item = 0, texture = 0},
+        ["eye_color"]   = {type = "feature", item = 0, texture = 0},
         ["t-shirt"]     = {type = "character", item = 0, texture = 0},
         ["torso2"]      = {type = "character", item = 0, texture = 0},
         ["pants"]       = {type = "character", item = 0, texture = 0},
         ["shoes"]       = {type = "character", item = 0, texture = 0},
-        ["face"]        = {type = "character", item = 0, texture = 0},
-        ["face2"]       = {type = "character", item = 0, texture = 0},
-        ["facemix"]     = {type = "character", shapeMix = 0, skinMix = 0},
+        ["face"]        = {type = "feature", item = 0, texture = 0},
+        ["face2"]       = {type = "feature", item = 0, texture = 0},
+        ["facemix"]     = {type = "feature", shapeMix = 0, skinMix = 0},
         ["vest"]        = {type = "character", item = 0, texture = 0},
         ["accessory"]   = {type = "character", item = 0, texture = 0},
         ["decals"]      = {type = "character", item = 0, texture = 0},
         ["bag"]         = {type = "character", item = 0, texture = 0},
-        ["moles"]       = {type = "hair", item = 0, texture = 0},
+        ["moles"]       = {type = "feature", item = 0, texture = 0},
         ["hair"]        = {type = "hair", item = 0, texture = 0},
         ["eyebrows"]    = {type = "hair", item = 0, texture = 0},
         ["beard"]       = {type = "hair", item = 0, texture = 0},
-        ["eye_opening"]   = {type = "hair",  id = 1},
-        ["jaw_bone_width"]       = {type = "hair", item = 0, texture = 0},
-        ["jaw_bone_back_lenght"]       = {type = "hair", item = 0, texture = 0},
-        ["lips_thickness"]       = {type = "hair", item = 0, texture = 0},
-        ["cheek_1"]       = {type = "hair", item = 0, texture = 0},
-        ["cheek_2"]       = {type = "hair", item = 0, texture = 0},
-        ["cheek_3"]       = {type = "hair", item = 0, texture = 0},
-        ["eyebrown_high"]       = {type = "hair", item = 0, texture = 0},
-        ["eyebrown_forward"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_0"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_1"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_2"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_3"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_4"]       = {type = "hair", item = 0, texture = 0},
-        ["nose_5"]       = {type = "hair", item = 0, texture = 0},
-        ["chimp_bone_lowering"]       = {type = "hair", item = 0, texture = 0},
-        ["chimp_bone_lenght"]       = {type = "hair", item = 0, texture = 0},
-        ["chimp_bone_width"]       = {type = "hair", item = 0, texture = 0},
-        ["chimp_hole"]       = {type = "hair", item = 0, texture = 0},
-        ["neck_thikness"]       = {type = "hair", item = 0, texture = 0},
+        ["eye_opening"]   = {type = "feature",  id = 1},
+        ["jaw_bone_width"]       = {type = "feature", item = 0, texture = 0},
+        ["jaw_bone_back_lenght"]       = {type = "feature", item = 0, texture = 0},
+        ["lips_thickness"]       = {type = "feature", item = 0, texture = 0},
+        ["cheek_1"]       = {type = "feature", item = 0, texture = 0},
+        ["cheek_2"]       = {type = "feature", item = 0, texture = 0},
+        ["cheek_3"]       = {type = "feature", item = 0, texture = 0},
+        ["eyebrown_high"]       = {type = "feature", item = 0, texture = 0},
+        ["eyebrown_forward"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_0"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_1"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_2"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_3"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_4"]       = {type = "feature", item = 0, texture = 0},
+        ["nose_5"]       = {type = "feature", item = 0, texture = 0},
+        ["chimp_bone_lowering"]       = {type = "feature", item = 0, texture = 0},
+        ["chimp_bone_lenght"]       = {type = "feature", item = 0, texture = 0},
+        ["chimp_bone_width"]       = {type = "feature", item = 0, texture = 0},
+        ["chimp_hole"]       = {type = "feature", item = 0, texture = 0},
+        ["neck_thikness"]       = {type = "feature", item = 0, texture = 0},
         ["blush"]       = {type = "hair", item = 0, texture = 0},
         ["lipstick"]    = {type = "hair", item = 0, texture = 0},
         ["makeup"]      = {type = "hair", item = 0, texture = 0},
@@ -659,7 +659,8 @@ local function openMenu(allowedMenus)
         menus = allowedMenus,
         currentClothing = skinData,
         hasTracker = trackerMeta,
-        translations = translations
+        translations = translations,
+        allowModelSelect = Config.allowModelSelect
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
@@ -1862,7 +1863,7 @@ if Config.UseTarget then
                     action = function()
                         customCamLocation = nil
                         openMenu({
-                            {menu = "clothing", label = Lang:t("menu.hair"), selected = true},
+                            {menu = "hair", label = Lang:t("menu.hair"), selected = true},
                         })
                     end,
                     icon = "fas fa-chair-office",
@@ -1885,7 +1886,7 @@ if Config.UseTarget then
                     action = function()
                         customCamLocation = nil
                         openMenu({
-                            {menu = "clothing", label = Lang:t("menu.features"), selected = true},
+                            {menu = "feature", label = Lang:t("menu.features"), selected = true},
                         })
                     end,
                     icon = "fas fa-scalpel",
@@ -2014,7 +2015,7 @@ else
                     if IsControlJustReleased(0, 38) then
                         customCamLocation = nil
                         openMenu({
-                            {menu = "clothing", label = Lang:t("menu.features"), selected = true},
+                            {menu = "feature", label = Lang:t("menu.features"), selected = true},
                         })
                     end
                 elseif zoneName == 'clothing' then
@@ -2029,7 +2030,7 @@ else
                     if IsControlJustReleased(0, 38) then
                         customCamLocation = nil
                         openMenu({
-                            {menu = "clothing", label = Lang:t("menu.hair"), selected = true},
+                            {menu = "hair", label = Lang:t("menu.hair"), selected = true},
                         })
                     end
                 elseif not QBCore.Shared.QBJobsStatus then

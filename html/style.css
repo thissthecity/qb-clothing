@@ -189,31 +189,10 @@
     font-size: 1.3vh;
 }
 
-.clothing-menu-character-container {
-    display: none;
-    position: absolute;
-    margin: 0 auto;
-    left: 0.3vh;
-    right: 0;
-    top: 9vh;
-    height: 86vh;
-    width: 92%;
-    overflow-y: scroll !important;
-}
-
-.clothing-menu-clothing-container {
-    display: none;
-    position: absolute;
-    margin: 0 auto;
-    left: 0.3vh;
-    right: 0;
-    top: 9vh;
-    height: 86vh;
-    width: 92%;
-    overflow-y: scroll !important;
-}
-
-.clothing-menu-accessoires-container {
+.clothing-menu-character-container,
+.clothing-menu-feature-container,
+.clothing-menu-accessoires-container,
+.clothing-menu-hair-container {
     display: none;
     position: absolute;
     margin: 0 auto;

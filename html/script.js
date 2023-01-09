@@ -417,7 +417,8 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");
-    $(".clothing-menu-clothing-container").css("display", "none");
+    $(".clothing-menu-hair-container").css("display", "none");
+    $(".clothing-menu-feature-container").css("display", "none");
     $(".clothing-menu-accessoires-container").css("display", "none");
     $(".clothing-menu-container").css({ "display": "block" }).animate({ right: 0, }, 200);
     QBClothing.SetMaxValues(data.maxValues);
@@ -429,12 +430,6 @@ QBClothing.Open = function(data) {
         if (menu.selected) {
             $(".clothing-menu-header").append('<div class="clothing-menu-header-btn ' + menu.menu + 'Tab selected" data-category="' + menu.menu + '"><p>' + menu.label + '</p></div>')
             $(".clothing-menu-" + menu.menu + "-container").css({ "display": "block" });
-
-            if (menu.label == "Clothing") {
-                $("#faceoption").css("display", "none");
-            } else {
-                $("#faceoption").css("display", "block");
-            }
 
             selectedTab = "." + menu.menu + "Tab";
             lastCategory = menu.menu;
@@ -465,6 +460,10 @@ QBClothing.Open = function(data) {
     var menuWidth = (100 / data.menus.length)
 
     $(".clothing-menu-header-btn").css("width", menuWidth + "%");
+    $("#player_model").css("display", "none");
+    if(data.allowModelSelect != undefined && data.allowModelSelect) {
+        $("#player_model").css("display", "block");
+    }
 }
 
 $(document).on('click', '.clothing-menu-outfit-option-button', function(e) {
@@ -535,7 +534,7 @@ QBClothing.SetMaxValues = function(maxValues) {
             $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
             $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
         } else if (cat.type == "hair") {
-            var containers = $(".clothing-menu-clothing-container").find('[data-type="' + i + '"]');
+            var containers = $(".clothing-menu-hair-container").find('[data-type="' + i + '"]');
             var itemMax = $(containers).find('[data-headertype="item-header"]');
             var headerMax = $(containers).find('[data-headertype="texture-header"]');
 
@@ -546,6 +545,16 @@ QBClothing.SetMaxValues = function(maxValues) {
             $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
         } else if (cat.type == "accessoires") {
             var containers = $(".clothing-menu-accessoires-container").find('[data-type="' + i + '"]');
+            var itemMax = $(containers).find('[data-headertype="item-header"]');
+            var headerMax = $(containers).find('[data-headertype="texture-header"]');
+
+            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
+            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
+
+            $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
+            $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
+        } else if (cat.type == "surgeon") {
+            var containers = $(".clothing-menu-feature-container").find('[data-type="' + i + '"]');
             var itemMax = $(containers).find('[data-headertype="item-header"]');
             var headerMax = $(containers).find('[data-headertype="texture-header"]');
 
