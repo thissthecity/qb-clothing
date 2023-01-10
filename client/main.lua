@@ -1233,8 +1233,9 @@ RegisterNetEvent('qb-clothing:client:openMenu')
 AddEventHandler('qb-clothing:client:openMenu', function()
     customCamLocation = nil
     openMenu({
-        {menu = "character", label = Lang:t("menu.features"), selected = true},
-        {menu = "clothing", label = Lang:t("menu.clothing"), selected = false},
+        {menu = "feature", label = Lang:t("menu.feature"), selected = true},
+        {menu = "character", label = Lang:t("menu.character"), selected = false},
+        {menu = "hair", label = Lang:t("menu.hair"), selected = false},
         {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
     })
 end)
@@ -1250,9 +1251,10 @@ AddEventHandler('qb-clothes:client:CreateFirstCharacter', function()
     QBCore.Functions.GetPlayerData(function(pData)
         local skin = "mp_m_freemode_01"
         openMenu({
-            {menu = "character", label = "Character", selected = true},
-            {menu = "clothing", label = "Features", selected = false},
-            {menu = "accessoires", label = "Accessories", selected = false}
+            {menu = "feature", label = Lang:t("menu.features"), selected = true},
+            {menu = "character", label = Lang:t("menu.character"), selected = false},
+            {menu = "hair", label = Lang:t("menu.hair"), selected = false},
+            {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
         })
 
         if pData.charinfo.gender == 1 then
