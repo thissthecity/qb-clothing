@@ -373,10 +373,10 @@ QBClothing.ReloadOutfits = function(outfits) {
                 <p>${outfit.outfitname}</p>
             </div>
             <div class="clothing-menu-myOutfit-option-button">
-                <p data-tkey="select">Select</p>
+                <p data-tkey="select">${translatePhrase("select", "Select")}</p>
             </div>
             <div class="clothing-menu-myOutfit-option-button-remove">
-                <p data-tkey="delete">Delete</p>
+                <p data-tkey="delete">${translatePhrase("delete", "Delete")}</p>
             </div>
         </div>`
         $(".clothing-menu-myOutfits-container").append(elem)
@@ -465,7 +465,7 @@ QBClothing.Open = function(data) {
                             <p>${outfit.outfitLabel}</p>
                         </div>
                         <div class="clothing-menu-outfit-option-button">
-                            <p data-tkey="select_outfit">Select Outfit</p>
+                            <p data-tkey="select_outfit">${translatePhrase("select_outfit", "Select Outfit")}</p>
                         </div>
                     </div>`
                 $(".clothing-menu-roomOutfits-container").append(elem)
@@ -482,10 +482,10 @@ QBClothing.Open = function(data) {
                             <p>${outfit.outfitname}</p>
                         </div>
                         <div class="clothing-menu-myOutfit-option-button">
-                            <p data-tkey="select_outfit">Select Outfit</p>
+                            <p data-tkey="select_outfit">${translatePhrase("select_outfit", "Select Outfit")}</p>
                         </div>
                         <div class="clothing-menu-myOutfit-option-button-remove">
-                            <p data-tkey="delete">Delete</p>
+                            <p data-tkey="delete">${translatePhrase("delete", "Delete")}</p>
                         </div>
                     </div>`
                 $(".clothing-menu-myOutfits-container").append(elem)
@@ -561,46 +561,27 @@ QBClothing.Close = function() {
 
 QBClothing.SetMaxValues = function(maxValues) {
     $.each(maxValues, function(i, cat) {
+        let containers;
         if (cat.type == "character") {
-            var containers = $(".clothing-menu-character-container").find('[data-type="' + i + '"]');
-            var itemMax = $(containers).find('[data-headertype="item-header"]');
-            var headerMax = $(containers).find('[data-headertype="texture-header"]');
-
-            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
-            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
-
-            $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
-            $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
+            containers = $(".clothing-menu-character-container").find('[data-type="' + i + '"]');
         } else if (cat.type == "hair") {
-            var containers = $(".clothing-menu-hair-container").find('[data-type="' + i + '"]');
-            var itemMax = $(containers).find('[data-headertype="item-header"]');
-            var headerMax = $(containers).find('[data-headertype="texture-header"]');
-
-            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
-            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
-
-            $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
-            $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
+            containers = $(".clothing-menu-hair-container").find('[data-type="' + i + '"]');
         } else if (cat.type == "accessoires") {
-            var containers = $(".clothing-menu-accessoires-container").find('[data-type="' + i + '"]');
-            var itemMax = $(containers).find('[data-headertype="item-header"]');
-            var headerMax = $(containers).find('[data-headertype="texture-header"]');
+            containers = $(".clothing-menu-accessoires-container").find('[data-type="' + i + '"]');
+        } else if (cat.type == "feature") {
+            containers = $(".clothing-menu-feature-container").find('[data-type="' + i + '"]');
+        } else {
+            console.log(cat.type)
+        }
+        if(containers != undefined) {
+            let itemMax = $(containers).find('[data-headertype="item-header"]');
+            let headerMax = $(containers).find('[data-headertype="texture-header"]');
 
-            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
-            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
+            $(itemMax).data('maxItem', maxValues[containers.data('type')].item);
+            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture);
 
-            $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
-            $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
-        } else if (cat.type == "surgeon") {
-            var containers = $(".clothing-menu-feature-container").find('[data-type="' + i + '"]');
-            var itemMax = $(containers).find('[data-headertype="item-header"]');
-            var headerMax = $(containers).find('[data-headertype="texture-header"]');
-
-            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
-            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
-
-            $(itemMax).html("<p><span data-tkey='item'>Item</span>: " + maxValues[containers.data('type')].item + "</p>")
-            $(headerMax).html("<p><span data-tkey='texture'>Texture</span>: " + maxValues[containers.data('type')].texture + "</p>")
+            $(itemMax).html(`<p><span data-tkey="item">${translatePhrase("item", "Item")}</span>: ${maxValues[containers.data('type')].item}</p>`);
+            $(headerMax).html(`<p><span data-tkey='texture'>${translatePhrase("texture", "Texture")}</span>: ${maxValues[containers.data('type')].texture}</p>`);
         }
     })
 }

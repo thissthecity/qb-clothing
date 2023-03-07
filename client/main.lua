@@ -1552,7 +1552,7 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     end
 
     if oData.outfitName ~= nil then
-        QBCore.Functions.Notify(Lang:t("notify.info_selectOutfit", {value = oData.outfitName}))
+        QBCore.Functions.Notify(Lang:t("notify.info_selectOutfit", {outfit = oData.outfitName}))
     end
 end)
 RegisterNetEvent("qb-clothing:client:adjustfacewear")
