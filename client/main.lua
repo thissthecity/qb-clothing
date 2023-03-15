@@ -1674,7 +1674,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     TriggerServerEvent("qb-clothes:loadPlayerSkin")
     PlayerData = QBCore.Functions.GetPlayerData()
---    QBCore.Shared.Jobs = exports['qb-jobs']:AddJobs()
+    loadClothing()
 end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerData.job = JobInfo
@@ -1856,196 +1856,199 @@ Citizen.CreateThread(function()
         end
     end
 end)
-if Config.UseTarget then
-    CreateThread(function()
-        for k, v in pairs(Config.Stores) do
-            local opts = {}
-            if v.shopType == 'barber' then
-                opts = {
-                    action = function()
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "hair", label = Lang:t("menu.hair"), selected = true},
-                        })
-                    end,
-                    icon = "fas fa-chair-office",
-                    label = Lang:t("store.barber"),
-                }
-            elseif v.shopType == 'clothing' then
-                opts = {
-                    action = function()
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "character", label = Lang:t("menu.character"), selected = true},
-                            {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
-                        })
-                    end,
-                    icon = "fas fa-clothes-hanger",
-                    label = Lang:t("store.clothing"),
-                }
-            elseif v.shopType == 'surgeon' then
-                opts = {
-                    action = function()
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "feature", label = Lang:t("menu.features"), selected = true},
-                        })
-                    end,
-                    icon = "fas fa-scalpel",
-                    label = Lang:t("store.surgeon"),
-                }
+
+function loadClothing()
+    if Config.UseTarget then
+        CreateThread(function()
+            for k, v in pairs(Config.Stores) do
+                local opts = {}
+                if v.shopType == 'barber' then
+                    opts = {
+                        action = function()
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "hair", label = Lang:t("menu.hair"), selected = true},
+                            })
+                        end,
+                        icon = "fas fa-chair-office",
+                        label = Lang:t("store.barber"),
+                    }
+                elseif v.shopType == 'clothing' then
+                    opts = {
+                        action = function()
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "character", label = Lang:t("menu.character"), selected = true},
+                                {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
+                            })
+                        end,
+                        icon = "fas fa-clothes-hanger",
+                        label = Lang:t("store.clothing"),
+                    }
+                elseif v.shopType == 'surgeon' then
+                    opts = {
+                        action = function()
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "feature", label = Lang:t("menu.features"), selected = true},
+                            })
+                        end,
+                        icon = "fas fa-scalpel",
+                        label = Lang:t("store.surgeon"),
+                    }
+                end
+
+                exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
+                    name = v.shopType .. k,
+                    debugPoly = false,
+                    minZ = v.coords.z-1,
+                    maxZ = v.coords.z+1,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            action = opts.action,
+                            icon = opts.icon,
+                            label = opts.label,
+                        },
+                    },
+                    distance = 3
+                })
             end
+            for k, v in pairs(Config.ClothingRooms) do
+                local action
+                if v.isGang then
+                    action = function()
+                        customCamLocation = v.cameraLocation
+                        local gradeLevel = PlayerData.gang.grade.level
+                        getOutfits(gradeLevel, Config.Outfits[v.requiredJob])
+                    end
+                elseif not QBCore.Shared.QBJobsStatus then
+                    action = function()
+                        customCamLocation = v.cameraLocation
+                        local gradeLevel = PlayerData.job.grade.level
+                        getOutfits(gradeLevel, Config.Outfits[v.requiredJob])
+                    end
+                else break end --this break is important if QBJobsStatus is true then the rest of the code in this loop does not need to run.
 
-            exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
-                name = v.shopType .. k,
-                debugPoly = false,
-                minZ = v.coords.z-1,
-                maxZ = v.coords.z+1,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        action = opts.action,
-                        icon = opts.icon,
-                        label = opts.label,
+                exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
+                    name = 'clothing_' .. v.requiredJob .. k,
+                    debugPoly = false,
+                    minZ = v.coords.z - 2,
+                    maxZ = v.coords.z + 2,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            action = action,
+                            icon = "fas fa-sign-in-alt",
+                            label = Lang:t("menu.character"),
+                            job = v.requiredJob
+                        },
                     },
-                },
-                distance = 3
-            })
-        end
-        for k, v in pairs(Config.ClothingRooms) do
-            local action
-            if v.isGang then
-                action = function()
-                    customCamLocation = v.cameraLocation
-                    local gradeLevel = PlayerData.gang.grade.level
-                    getOutfits(gradeLevel, Config.Outfits[v.requiredJob])
-                end
-            elseif not QBCore.Shared.QBJobsStatus then
-                action = function()
-                    customCamLocation = v.cameraLocation
-                    local gradeLevel = PlayerData.job.grade.level
-                    getOutfits(gradeLevel, Config.Outfits[v.requiredJob])
-                end
-            else break end --this break is important if QBJobsStatus is true then the reste of the code in this loop does not need to run.
-
-            exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.requiredJob .. k,
-                debugPoly = false,
-                minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        action = action,
-                        icon = "fas fa-sign-in-alt",
-                        label = Lang:t("menu.character"),
-                        job = v.requiredJob
-                    },
-                },
-                distance = 3
-            })
-        end
-    end)
-else
-    CreateThread(function()
-        local zones = {}
-        for _, v in pairs(Config.Stores) do
-            zones[#zones+1] = BoxZone:Create(
-                v.coords, v.length, v.width, {
-                name = v.shopType,
-                minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2,
-                debugPoly = false,
-            })
-        end
-
-        local clothingCombo = ComboZone:Create(zones, {name = "clothingCombo", debugPoly = false})
-        clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
-            if isPointInside then
-                zoneName = zone.name
-                inZone = true
-                if zoneName == 'surgeon' then
-                    exports['qb-core']:DrawText('[E] - '..Lang:t("store.surgeon"), 'left')
-                elseif zoneName == 'clothing' then
-                    exports['qb-core']:DrawText('[E] - '..Lang:t("store.clothing"), 'left')
-                elseif zoneName == 'barber' then
-                    exports['qb-core']:DrawText('[E] - '..Lang:t("store.barber"), 'left')
-                end
-            else
-                inZone = false
-                exports['qb-core']:HideText()
+                    distance = 3
+                })
             end
         end)
-        if PlayerData.gang and PlayerData.gang.name then
-            local roomZones = {}
-            for k,v in pairs(Config.ClothingRooms) do
-                roomZones[#roomZones+1] = BoxZone:Create(
+    else
+        CreateThread(function()
+            local zones = {}
+            for _, v in pairs(Config.Stores) do
+                zones[#zones+1] = BoxZone:Create(
                     v.coords, v.length, v.width, {
-                    name = 'ClothingRooms_' .. k,
+                    name = v.shopType,
                     minZ = v.coords.z - 2,
                     maxZ = v.coords.z + 2,
                     debugPoly = false,
                 })
             end
-            local clothingRoomsCombo = ComboZone:Create(roomZones, {name = "clothingRoomsCombo", debugPoly = false})
-            clothingRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
+
+            local clothingCombo = ComboZone:Create(zones, {name = "clothingCombo", debugPoly = false})
+            clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
                 if isPointInside then
-                    local zoneID = tonumber(QBCore.Shared.SplitStr(zone.name, "_")[2])
-                    local job = Config.ClothingRooms[zoneID].isGang and PlayerData.gang.name or (not QBCore.Shared.QBJobsStatus and PlayerData.job.name)
-                    if (job == Config.ClothingRooms[zoneID].requiredJob) then
-                        zoneName = zoneID
-                        inZone = true
+                    zoneName = zone.name
+                    inZone = true
+                    if zoneName == 'surgeon' then
+                        exports['qb-core']:DrawText('[E] - '..Lang:t("store.surgeon"), 'left')
+                    elseif zoneName == 'clothing' then
                         exports['qb-core']:DrawText('[E] - '..Lang:t("store.clothing"), 'left')
+                    elseif zoneName == 'barber' then
+                        exports['qb-core']:DrawText('[E] - '..Lang:t("store.barber"), 'left')
                     end
                 else
                     inZone = false
                     exports['qb-core']:HideText()
                 end
             end)
-        end
-    end)
-    -- Clothing Thread
-    CreateThread(function ()
-        Wait(1000)
-        while true do
-            local sleep = 1000
-            if inZone then
-                sleep = 5
-                if zoneName == 'surgeon' then
-                    if IsControlJustReleased(0, 38) then
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "feature", label = Lang:t("menu.features"), selected = true},
-                        })
+            if (PlayerData.gang and PlayerData.gang.name) or (PlayerData.job and PlayerData.job.name) then
+                local roomZones = {}
+                for k,v in pairs(Config.ClothingRooms) do
+                    roomZones[#roomZones+1] = BoxZone:Create(
+                        v.coords, v.length, v.width, {
+                        name = 'ClothingRooms_' .. k,
+                        minZ = v.coords.z - 2,
+                        maxZ = v.coords.z + 2,
+                        debugPoly = false,
+                    })
+                end
+                local clothingRoomsCombo = ComboZone:Create(roomZones, {name = "clothingRoomsCombo", debugPoly = false})
+                clothingRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
+                    if isPointInside then
+                        local zoneID = tonumber(QBCore.Shared.SplitStr(zone.name, "_")[2])
+                        local job = Config.ClothingRooms[zoneID].isGang and PlayerData.gang.name or (not QBCore.Shared.QBJobsStatus and PlayerData.job.name)
+                        if (job == Config.ClothingRooms[zoneID].requiredJob) then
+                            zoneName = zoneID
+                            inZone = true
+                            exports['qb-core']:DrawText('[E] - '..Lang:t("store.clothing"), 'left')
+                        end
+                    else
+                        inZone = false
+                        exports['qb-core']:HideText()
                     end
-                elseif zoneName == 'clothing' then
-                    if IsControlJustReleased(0, 38) then
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "character", label = Lang:t("menu.character"), selected = true},
-                            {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
-                        })
-                    end
-                elseif zoneName == 'barber' then
-                    if IsControlJustReleased(0, 38) then
-                        customCamLocation = nil
-                        openMenu({
-                            {menu = "hair", label = Lang:t("menu.hair"), selected = true},
-                        })
-                    end
-                elseif not QBCore.Shared.QBJobsStatus then
-                    if IsControlJustReleased(0, 38) then
-                        local clothingRoom = Config.ClothingRooms[zoneName]
-                        customCamLocation = clothingRoom.cameraLocation
+                end)
+            end
+        end)
+        -- Clothing Thread
+        CreateThread(function ()
+            Wait(1000)
+            while true do
+                local sleep = 1000
+                if inZone then
+                    sleep = 5
+                    if zoneName == 'surgeon' then
+                        if IsControlJustReleased(0, 38) then
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "feature", label = Lang:t("menu.features"), selected = true},
+                            })
+                        end
+                    elseif zoneName == 'clothing' then
+                        if IsControlJustReleased(0, 38) then
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "character", label = Lang:t("menu.character"), selected = true},
+                                {menu = "accessoires", label = Lang:t("menu.accessoires"), selected = false}
+                            })
+                        end
+                    elseif zoneName == 'barber' then
+                        if IsControlJustReleased(0, 38) then
+                            customCamLocation = nil
+                            openMenu({
+                                {menu = "hair", label = Lang:t("menu.hair"), selected = true},
+                            })
+                        end
+                    elseif not QBCore.Shared.QBJobsStatus then
+                        if IsControlJustReleased(0, 38) then
+                            local clothingRoom = Config.ClothingRooms[zoneName]
+                            customCamLocation = clothingRoom.cameraLocation
 
-                        local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or (not QBCore.Shared.QBJobsStatus and PlayerData.job.grade.level)
-                        getOutfits(gradeLevel, Config.Outfits[clothingRoom.requiredJob])
+                            local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or (not QBCore.Shared.QBJobsStatus and PlayerData.job.grade.level)
+                            getOutfits(gradeLevel, Config.Outfits[clothingRoom.requiredJob])
+                        end
                     end
                 end
+                Wait(sleep)
             end
-            Wait(sleep)
-        end
-    end)
+        end)
+    end
 end
