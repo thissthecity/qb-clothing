@@ -541,7 +541,7 @@ Config.Stores = {
 
 -- set isGang to true if the requiredJob is a gang
 Config.ClothingRooms = {
-    [1] = {requiredJob = 'police', isGang = false, coords = vector3(-1094.46, -831.73, 14.28), width = 2, length = 2, cameraLocation = vector4(-1095.09, -833.89, 14.28, 342.0)},
+    [1] = {requiredJob = 'police', isGang = false, coords = vector3(-1095.12, -831.2, 14.28), width = 2, length = 2, cameraLocation = vector4(-1095.09, -833.89, 14.28, 342.0)},
     [2] = {requiredJob = 'police', isGang = false, coords = vector3(314.76, 671.78, 14.73), width = 2, length = 2, cameraLocation = vector4(317.62, 671.86, 14.73, 91.53)},
     [3] = {requiredJob = 'police', isGang = false, coords = vector3(-77.59, -129.17, 5.03), width = 2, length = 2, cameraLocation = vector4(-80.36, -130.76, 5.03, 300.44)},
     [4] = {requiredJob = 'ambulance', isGang = false, coords = vector3(-663.61, 322.21, 92.74), width = 2, length = 2, cameraLocation = vector4(-665.58, 322.26, 92.74, 264.09)}, -- Right double door in Hospital Map that is on QBCore GitHub
